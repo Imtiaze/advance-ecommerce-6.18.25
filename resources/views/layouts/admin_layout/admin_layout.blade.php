@@ -51,6 +51,8 @@
     <script src="{{ url('js/admin_js/adminlte.min.js') }}"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="{{ url('js/admin_js/demo.js') }}"></script>
+
+    @stack('custom-scripts')
 </body>
 
 </html>

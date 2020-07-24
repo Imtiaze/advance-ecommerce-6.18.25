@@ -24,7 +24,7 @@ class AdminTableSeeder extends Seeder
                 'email'    => 'admin@gmail.com',
                 'mobile'   => '01303120306',
                 'password' => Hash::make('123456'),
-                'image'    => '',
+                'image'    => NULL,
                 'status'   => 1,
             ]
         ];
