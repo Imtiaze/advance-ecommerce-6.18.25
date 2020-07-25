@@ -29,5 +29,8 @@ Route::prefix('/admin')->namespace('Admin')->group(function() {
         Route::post('update-admin-details', 'AdminController@updateAdminDetails');
         Route::post('check-current-password', 'AdminController@checkCurrentPassword');
         Route::get('logout', 'AdminController@logout');
+
+        Route::get('sections', 'SectionController@index');
+        Route::post('update-section-status', 'SectionController@updateSectionStatus');
     });
 });

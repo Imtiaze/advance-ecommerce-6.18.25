@@ -15,7 +15,8 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
-        return view('admin.admin_dashboard');
+        $data['menu'] = 'dashboard';
+        return view('admin.admin_dashboard', $data);
     }
 
     public function getAdminDetails()

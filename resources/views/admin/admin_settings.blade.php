@@ -176,24 +176,24 @@
             // console.log(currentPassword);
 
             $.ajax({
-                    method: "POST",
-                    url: "check-current-password",
-                    data: {
-                        "_token": "{{ csrf_token() }}",
-                        'currentPassword': currentPassword
-                    }
-                })
-                .done(function(response) {
-                    // console.log(response);
-                    if (response.success.status == true) {
-                        $('.password-check').html('<strong class="text-success">' + response.success.message + '</strong>');
-                    } else {
-                        $('.password-check').html('<strong class="text-danger">' + response.success.message + '</strong>');
-                    }
-                })
-                .fail(function() {
-                    alert(response);
-                });
+                method: "POST",
+                url: "check-current-password",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    'currentPassword': currentPassword
+                }
+            })
+            .done(function(response) {
+                // console.log(response);
+                if (response.success.status == true) {
+                    $('.password-check').html('<strong class="text-success">' + response.success.message + '</strong>');
+                } else {
+                    $('.password-check').html('<strong class="text-danger">' + response.success.message + '</strong>');
+                }
+            })
+            .fail(function() {
+                alert(response);
+            });
         });
     });
 </script>
