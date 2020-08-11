@@ -10,7 +10,8 @@ class SectionController extends Controller
 {
     public function index()
     {
-        $data['menu']     = 'sections';
+        $data['menu']     = 'catelouges';
+        $data['subMenu']  = 'sections';
         $data['sections'] = Section::get(['id', 'name', 'status']);
         // dd($data);
 

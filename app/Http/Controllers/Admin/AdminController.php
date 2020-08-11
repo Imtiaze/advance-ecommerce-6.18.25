@@ -45,26 +45,40 @@ class AdminController extends Controller
 
         $validator = Validator::make($request->all(), $rules);
         $validator->setAttributeNames($fieldNames);
-        if ($validator->fails()) {
+        if ($validator->fails()) 
+        {
             return back()->withErrors($validator)->withInput();
-        } else {
+        } else 
+        {
             $currentPassword      = $request->currentPassword;
             $password             = $request->password;
             $passwordConfirmation = $request->password_confirmation;
 
             // dd($currentPassword, $password, $passwordConfirmation);
 
+            if (!empty($currentPassword) && !empty($password) && !empty($passwordConfirmation))
+            {
+                if (Hash::check($currentPassword, $adminDetails->password)) 
+                {
+                    if ($password === $passwordConfirmation) 
+                    {
+                        Admin::where(['email' => Auth::guard('admin')->user()->email])->update(['password' => Hash::make($password)]);
 
-            if (Hash::check($currentPassword, $adminDetails->password)) {
-                if ($password === $passwordConfirmation) {
-                    Admin::where(['email' => Auth::guard('admin')->user()->email])->update(['password' => Hash::make($password)]);
-
-                    return redirect()->back()->with('success', 'Password updated successfully.');
-                } else {
-                    return redirect()->back()->with('error', 'New password and confirm password doesn\'t matched.');
+                        return redirect()->back()->with('success', 'Password updated successfully.');
+                    } 
+                    else 
+                    {
+                        return redirect()->back()->with('error', 'New password and confirm password doesn\'t matched.');
+                    }
+                } 
+                else 
+                {
+                    return redirect()->back()->with('error', 'Please enter the correct password.');
                 }
-            } else {
-                return redirect()->back()->with('error', 'Please enter the correct password.');
+            }
+            else
+            {
+                return redirect()->back();
             }
         }
     }
@@ -108,7 +122,9 @@ class AdminController extends Controller
 
                     if (file_exists($existingFileLocation)) 
                     {
-                        unlink($existingFileLocation);
+                        // dd($existingFileLocation);
+                        // unlink($_SERVER['DOCUMENT_ROOT'] . $existingFileLocation);
+                        @unlink($existingFileLocation);
                     }
                     if ($extension == 'png' || $extension == 'jpg' || $extension == 'jpeg' || $extension == 'gif' || $extension == 'bmp') 
                     {

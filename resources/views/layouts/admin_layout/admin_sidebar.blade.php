@@ -33,13 +33,31 @@
                     </a>
                 </li>
 
-                <li class="nav-item has-treeview">
-                    <a href="{{ url('admin/sections') }}" class="nav-link {{ (isset($menu) && ($menu == 'sections')) ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
+
+                <li class="nav-item has-treeview  {{ (isset($menu) && ($menu == 'catelouges')) ? 'menu-open' : '' }} ">
+                    <a href="#" class="nav-link {{ (isset($menu) && ($menu == 'catelouges')) ? 'active' : '' }} ">
+                        <i class="nav-icon fa fa-cog"></i>
                         <p>
-                            Sections
+                            Catelouges
+                            <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ url('admin/sections') }}" class="nav-link {{ (isset($subMenu) && ($subMenu == 'sections')) ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Sections</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ url('admin/categories') }}" class="nav-link {{ (isset($subMenu) && ($subMenu == 'categories')) ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Categories</p>
+                            </a>
+                        </li>
+
+                    </ul>
                 </li>
 
 
