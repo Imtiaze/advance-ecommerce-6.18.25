@@ -4,6 +4,11 @@
 <!-- Select2 -->
 <link rel="stylesheet" href="{{ url('plugins/select2/css/select2.min.css') }}">
 <link rel="stylesheet" href="{{ url('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+<style>
+    .has-error .select2-selection {
+        border-color: rgb(185, 74, 72) !important;
+    }
+</style>
 @endpush
 
 @section('content')
@@ -39,7 +44,8 @@
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form role="form">
+                        <form role="form" id="categoryAddForm" action="{{ url('admin/add-category') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -47,31 +53,30 @@
                                         <!-- Name -->
                                         <div class="form-group">
                                             <label for="name">Name</label>
-                                            <input type="text" name="name" class="form-control" id="name" placeholder="Enter category name">
+                                            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" id="name" placeholder="Enter category name">
+                                            <span class="text-danger">{{ $errors->first('name') }}</span>
                                         </div>
 
                                         <!-- Section -->
                                         <div class="form-group">
                                             <label>Section</label>
-                                            <select class="form-control select2" style="width: 100%;" name="section">
-                                                <option selected="selected">Select Section</option>
+                                            <select class="form-control select2 @error('section') is-invalid @enderror" style="width: 100%;" name="section">
+                                                <option value="">Select Section</option>
                                                 @foreach($sections as $section)
                                                 <option value="{{ $section->id }}">{{ $section->name }}</option>
                                                 @endforeach
                                             </select>
+                                            <span class="text-danger">{{ $errors->first('section') }}</span>
                                         </div>
 
                                         <!-- Category -->
                                         <div class="form-group">
                                             <label>Category</label>
                                             <select class="form-control select2" style="width: 100%;" name="category">
-                                                <option selected="selected">Main Category</option>
-                                                <option>Alaska</option>
-                                                <option>California</option>
-                                                <option>Delaware</option>
-                                                <option>Tennessee</option>
-                                                <option>Texas</option>
-                                                <option>Washington</option>
+                                                <option value="">Main Category</option>
+                                                @foreach($categories as $category)
+                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
 
@@ -92,7 +97,8 @@
                                         <!-- Discount -->
                                         <div class="form-group">
                                             <label for="discount">Discount</label>
-                                            <input type="number" name="discount" class="form-control" id="discount" placeholder="0.00">
+                                            <input type="text" name="discount" class="form-control @error('discount') is-invalid @enderror" id="discount" placeholder="0.00"  onkeypress="return (event.charCode !=8 && event.charCode ==0 || ( event.charCode == 46 || (event.charCode >= 48 && event.charCode <= 57)))">
+                                            <span class="text-danger">{{ $errors->first('discount') }}</span>
                                         </div>
 
                                         <!-- Image -->
@@ -100,13 +106,14 @@
                                             <label for="image">Image</label>
                                             <div class="input-group">
                                                 <div class="custom-file">
-                                                    <input type="file" class="custom-file-input" id="image">
+                                                    <input type="file" name="image" class="custom-file-input @error('image') is-invalid @enderror" id="image">
                                                     <label class="custom-file-label" for="image">Choose file</label>
                                                 </div>
                                                 <div class="input-group-append">
-                                                    <span class="input-group-text" id="">Upload</span>
+                                                    <span class="input-group-text " id="">Upload</span>
                                                 </div>
                                             </div>
+                                            <span class="text-danger">{{ $errors->first('image') }}</span>
                                         </div>
 
                                         <!-- Status -->
@@ -135,7 +142,7 @@
                             <!-- /.card-body -->
 
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="submit" class="btn btn-primary">Add Category</button>
                             </div>
                         </form>
                     </div>

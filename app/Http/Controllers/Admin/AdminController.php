@@ -48,7 +48,8 @@ class AdminController extends Controller
         if ($validator->fails()) 
         {
             return back()->withErrors($validator)->withInput();
-        } else 
+        } 
+        else 
         {
             $currentPassword      = $request->currentPassword;
             $password             = $request->password;
