@@ -55,12 +55,9 @@
                                             <label>Section</label>
                                             <select class="form-control select2" style="width: 100%;" name="section">
                                                 <option selected="selected">Select Section</option>
-                                                <option>Alaska</option>
-                                                <option>California</option>
-                                                <option>Delaware</option>
-                                                <option>Tennessee</option>
-                                                <option>Texas</option>
-                                                <option>Washington</option>
+                                                @foreach($sections as $section)
+                                                <option value="{{ $section->id }}">{{ $section->name }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
 

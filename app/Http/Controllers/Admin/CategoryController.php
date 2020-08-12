@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Category;
+use App\Section;
 
 class CategoryController extends Controller
 {
@@ -21,6 +22,9 @@ class CategoryController extends Controller
         $data = [];
         $data['menu']       = 'catelouges';
         $data['subMenu']    = 'categories';
+
+        $data['sections'] = $section = Section::get(['id', 'name']);
+        
 
         if ($request->isMethod('POST'))
         {
