@@ -45,6 +45,8 @@
                         <tr>
                             <th>#ID</th>
                             <th>Name</th>
+                            <th>Discount</th>
+                            <th>Image</th>
                             <th>Status</th>
                         </tr>
                     </thead>
@@ -53,6 +55,8 @@
                         <tr>
                             <td>{{ $category->id }}</td>
                             <td>{{ $category->name }}</td>
+                            <td>{{ $category->discount }}</td>
+                            <td><img src="{{ url('images/categories/' . $category->image) }}" alt="" height="48" width="48"></td>
                             <td>
                                 @if ($category->status == 1)
                                 <a class="badge badge-success updateCategoryStatus" id="category_{{ $category->id }}" category_id="{{ $category->id }}" href="javascript:void(0)">Active</a>
@@ -67,6 +71,8 @@
                         <tr>
                             <th>#ID</th>
                             <th>Name</th>
+                            <th>Discount</th>
+                            <th>Image</th>
                             <th>Status</th>
                         </tr>
                     </tfoot>

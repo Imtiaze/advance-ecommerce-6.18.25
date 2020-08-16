@@ -19,7 +19,7 @@ class CreateCategoriesTable extends Migration
             $table->integer('section_id');
             $table->string('name');
             $table->string('image')->nullable()->default(NULL);
-            $table->float('discount')->nullable();
+            $table->float('discount')->nullable()->default(0.00);
             $table->text('description')->nullable();
             $table->string('url');
             $table->string('meta_title')->nullable();

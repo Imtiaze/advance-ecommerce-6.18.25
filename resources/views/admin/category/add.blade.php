@@ -4,11 +4,6 @@
 <!-- Select2 -->
 <link rel="stylesheet" href="{{ url('plugins/select2/css/select2.min.css') }}">
 <link rel="stylesheet" href="{{ url('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
-<style>
-    .has-error .select2-selection {
-        border-color: rgb(185, 74, 72) !important;
-    }
-</style>
 @endpush
 
 @section('content')
@@ -53,14 +48,14 @@
                                         <!-- Name -->
                                         <div class="form-group">
                                             <label for="name">Name</label>
-                                            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" id="name" placeholder="Enter category name">
+                                            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" id="name" placeholder="Enter category name" value="{{ old('name') }}">
                                             <span class="text-danger">{{ $errors->first('name') }}</span>
                                         </div>
 
                                         <!-- Section -->
                                         <div class="form-group">
                                             <label>Section</label>
-                                            <select class="form-control select2 @error('section') is-invalid @enderror" style="width: 100%;" name="section">
+                                            <select class="form-control select2 @error('section') is-invalid @enderror" style="width: 100%;" name="section" id="section">
                                                 <option value="">Select Section</option>
                                                 @foreach($sections as $section)
                                                 <option value="{{ $section->id }}">{{ $section->name }}</option>
@@ -72,24 +67,21 @@
                                         <!-- Category -->
                                         <div class="form-group">
                                             <label>Category</label>
-                                            <select class="form-control select2" style="width: 100%;" name="category">
+                                            <select class="form-control select2" style="width: 100%;" name="category" id="category">
                                                 <option value="">Main Category</option>
-                                                @foreach($categories as $category)
-                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                                @endforeach
                                             </select>
                                         </div>
 
                                         <!-- Description -->
                                         <div class="form-group">
                                             <label>Description</label>
-                                            <textarea class="form-control" name="description" rows="3" placeholder="Category description ..."></textarea>
+                                            <textarea class="form-control" name="description" rows="3" placeholder="Category description ...">{{ old('description') }}</textarea>
                                         </div>
 
                                         <!-- Meta Title -->
                                         <div class="form-group">
                                             <label>Meta Title</label>
-                                            <textarea class="form-control" name="meta_title" rows="3" placeholder="Enter meta title..."></textarea>
+                                            <textarea class="form-control" name="meta_title" rows="3" placeholder="Enter meta title..." >{{ old('meta_title') }}</textarea>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -97,7 +89,7 @@
                                         <!-- Discount -->
                                         <div class="form-group">
                                             <label for="discount">Discount</label>
-                                            <input type="text" name="discount" class="form-control @error('discount') is-invalid @enderror" id="discount" placeholder="0.00"  onkeypress="return (event.charCode !=8 && event.charCode ==0 || ( event.charCode == 46 || (event.charCode >= 48 && event.charCode <= 57)))">
+                                            <input type="text" name="discount" class="form-control @error('discount') is-invalid @enderror" id="discount" placeholder="0.00"  onkeypress="return (event.charCode !=8 && event.charCode ==0 || ( event.charCode == 46 || (event.charCode >= 48 && event.charCode <= 57)))" value="{{ old('discount') }}">
                                             <span class="text-danger">{{ $errors->first('discount') }}</span>
                                         </div>
 
@@ -128,13 +120,13 @@
                                         <!-- Meta Description -->
                                         <div class="form-group">
                                             <label>Meta Description</label>
-                                            <textarea class="form-control" name="meta_description" rows="3" placeholder="Meta description ..."></textarea>
+                                            <textarea class="form-control" name="meta_description" rows="3" placeholder="Meta description ...">{{ old('meta_description') }}</textarea>
                                         </div>
 
                                         <!-- Meta Keywords -->
                                         <div class="form-group">
                                             <label>Meta Keywords</label>
-                                            <textarea class="form-control" name="meta_keywords" rows="3" placeholder="Meta keywords ..."></textarea>
+                                            <textarea class="form-control" name="meta_keywords" rows="3" placeholder="Meta keywords ...">{{ old('meta_keywords') }}</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -163,15 +155,54 @@
 <script src="{{ url('plugins/select2/js/select2.full.min.js') }}"></script>
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function() 
+    {
         bsCustomFileInput.init();
     });
     //Initialize Select2 Elements
-    $('.select2').select2()
+    $('.select2').select2();
 
     //Initialize Select2 Elements
-    $('.select2bs4').select2({
+    $('.select2bs4').select2(
+    {
         theme: 'bootstrap4'
-    })
+    });
+
+    $('#section').on('change', function() 
+    {
+        let sectionId = $(this).val();
+
+        $.ajax(
+        {
+            method: "POST",
+            url: "get-categories-by-section-wise",
+            data: {
+                "_token": "{{ csrf_token() }}",
+                'sectionId': sectionId
+            }
+        })
+        .done(function(response) 
+        {
+            // console.log(response); return false;
+            if (response.success.status == 200) 
+            {
+                $options = '';
+
+                $.each( response.success.categories, function( key, category ) {
+                    $options += `
+                        <option value="${category.id}">${category.name}</option>
+                    `;
+                });
+                $('#category').html($options);                             
+            } 
+            else if (response.success.status == 400)
+            {
+                $('#category').html(`<option value="">Main Category</option>`);          
+            }
+        })
+        .fail(function() {
+            alert(response);
+        });
+    });
 </script>
 @endpush
